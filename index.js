@@ -8,7 +8,8 @@ app
 
 app
     .route('/users/:requestParam')
-    .get($data.getActionUser);
+    .get($data.getActionUser)
+    .get($data.getUser);
 
 app
     .route('/users')

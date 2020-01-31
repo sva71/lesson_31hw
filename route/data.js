@@ -24,7 +24,7 @@ function universalMethod(req, res) {
         });
 }
 
-function getActionUser(req, res) {
+function getActionUser(req, res, next) {
     let path = pathConcat('api/users/');
     let users = [];
     fs.readdir(path, function(err, items) {
@@ -47,13 +47,17 @@ function getActionUser(req, res) {
                 break;
             }
             default: {
-                let p = fileReader(path + req.params.requestParam + '/get.json');
-                users.push(p);
-                break;
+                next();
+                return;
             }
         }
         Promise.all(users).then(results => res.json(results));
     })
+}
+
+function getUser(req, res) {
+    let path = pathConcat('api/users/');
+    fileReader(path + req.params.requestParam + '/get.json').then(response => res.json(response));
 }
 
 function getAllUsers(req, res) {
@@ -73,5 +77,6 @@ function getAllUsers(req, res) {
 module.exports = {
     universalMethod,
     getActionUser,
+    getUser,
     getAllUsers
 };
